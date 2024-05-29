@@ -11,18 +11,27 @@ const App = () => {
   const [item,setItem] = useState({});
 
   const fetchWeather = async () => {
-    const res = await api.get(`/weather?q=${country}&appid=${api_key}`)
-    setItem(res.data);
+    try {
+      const res = await api.get(`/weather?q=${country}&appid=${api_key}`)
+      setItem(res.data);
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   useEffect(()=>{
     fetchWeather();
-  },[])
+  },[item])
+
+  const submitSearch = (submitSearchItem) => {
+    setCountry(submitSearchItem)
+  }
+
 
   return (
     <div className='min-vh-100 d-flex justify-content-center align-items-center'>
         <div className='w-50 rounded'>
-          <SearchForm/>
+          <SearchForm submitSearch={submitSearch}/>
           <Card  item={item}/>
         </div>
     </div>
